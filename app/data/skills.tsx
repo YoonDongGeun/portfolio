@@ -73,7 +73,7 @@ export const skillsData: SkillCategory[] = [
         name: 'TanStack Query'
       },
       {
-        iconSrc: 'https://private-user-images.githubusercontent.com/7850794/444000081-00d6d1c3-72c4-4c2f-a664-69da13182ffc.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTg1MzI1MTEsIm5iZiI6MTc1ODUzMjIxMSwicGF0aCI6Ii83ODUwNzk0LzQ0NDAwMDA4MS0wMGQ2ZDFjMy03MmM0LTRjMmYtYTY2NC02OWRhMTMxODJmZmMucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI1MDkyMiUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNTA5MjJUMDkxMDExWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NmIwM2Y5Yzc3ZjRlMDk2MTZhMjRmNjVlMjdmZDA0ZTdkYWFlODZmZjdhMzA5NWQxNzQ3ZjU4MjYwYTU3YjQyYiZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ._YJg0q7s_bNxiv-u8hDXv_MeckujZWeHpHrxdnbxMAU',
+        iconSrc: '/icon/motion.png',
         alt: 'Motion',
         name: 'Motion'
       }

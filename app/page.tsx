@@ -53,7 +53,7 @@ export default function Home() {
       <header className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
         <nav className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold text-white">포트폴리오</h1>
+            <h1 className="text-xl font-bold text-white">윤동근 Portfolio</h1>
             <div className="hidden md:flex space-x-8">
               <a href="#about" className="text-white/80 hover:text-white transition-colors">About</a>
               <a href="#skills" className="text-white/80 hover:text-white transition-colors">Skills</a>
@@ -129,11 +129,25 @@ export default function Home() {
                   <br/>그래서 문제 해결을 바로 확인할 수 있는 코딩을 좋아합니다.
                 </p>
               </div>
-              <div className="bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10">
-                <h4 className="text-xl font-semibold text-white mb-4">경력</h4>
-                <ul className="space-y-2 text-white/80">
-                  <li>• 티맥스 비아이 (2023.07 - 2024.12)</li>
-                </ul>
+              <div className="bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 space-y-6">
+                <div>
+                  <h4 className="text-xl font-semibold text-white mb-4">경력</h4>
+                  <ul className="space-y-2 text-white/80">
+                    <li>• 티맥스 비아이 (2023.07 - 2024.12)</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold text-white mb-4">자격증</h4>
+                  <ul className="space-y-2 text-white/80">
+                    <li>• 정보처리기사 (2024.06)</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold text-white mb-4">교육</h4>
+                  <ul className="space-y-2 text-white/80">
+                    <li>• SSAFY 9기 수료 (2022.07 - 2023.06)</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
