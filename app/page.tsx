@@ -76,8 +76,8 @@ export default function Home() {
               입니다
             </h1>
             <p className="text-xl md:text-2xl text-white/80 mb-8 leading-relaxed">
-              어제 정답인 코드는 내일 정답이 아닐 수 있습니다.<br />
-              그래서 설계할 수 있는 개발자가 되고자 노력하고있습니다.
+              컴포넌트부터 아키텍처까지<br/>
+              설계할 수 있는 개발자가 되고있습니다.
             </p>
 
             <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 mb-8 max-w-2xl mx-auto">
@@ -85,7 +85,7 @@ export default function Home() {
               <div className="space-y-3 text-white/80">
                 <div className="flex items-start gap-3">
                   <span className="text-blue-400 font-bold">1.</span>
-                  <span>코드와 설계에는 정답은 없다. Trade-off일 뿐이다.</span>
+                  <span>코드와 설계에 정답은 없다. Trade-off일 뿐이다.</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-blue-400 font-bold">2.</span>
@@ -93,7 +93,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-blue-400 font-bold">3.</span>
-                  <span>시간, 능력, 자원은 한정적이다.</span>
+                  <span>시간, 능력, 자원은 한정적이다. 상황에 맞게 완성해라.</span>
                 </div>
               </div>
             </div>

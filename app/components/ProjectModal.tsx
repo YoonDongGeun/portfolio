@@ -191,7 +191,7 @@ export default function ProjectModal({ isOpen, onClose, project }: ProjectModalP
           {/* 기능별 바로가기 버튼 */}
           {project.features && project.features.length > 0 && (
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-white/60 text-sm mr-2">바쁘면 기능 바로 보기&nbsp;&nbsp; =&gt;</span>
+              <span className="text-white/60 text-sm mr-2">기능 바로 보기&nbsp;&nbsp; =&gt;</span>
               {project.features.map((feature, index) => (
                 <button
                   key={index}

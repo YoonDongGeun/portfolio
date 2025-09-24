@@ -158,14 +158,29 @@ export const skillsData: SkillCategory[] = [
         name: 'AWS'
       },
       {
+        iconSrc: 'https://www.vectorlogo.zone/logos/visualstudio_code/visualstudio_code-icon.svg',
+        alt: 'VSCode',
+        name: 'VSCode'
+      },
+      {
         iconSrc: 'https://cursor.com/assets/images/logo.svg',
         alt: 'Cursor',
         name: 'Cursor'
       },
       {
+        iconSrc: 'https://www.vectorlogo.zone/logos/jetbrains/jetbrains-icon.svg',
+        alt: 'IntelliJ',
+        name: 'IntelliJ'
+      },
+      {
         iconSrc: 'https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg',
         alt: 'Postman',
         name: 'Postman'
+      },
+      {
+        iconSrc: 'https://www.vectorlogo.zone/logos/atlassian_jira/atlassian_jira-icon.svg',
+        alt: 'Jira',
+        name: 'Jira'
       },
       {
         iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',

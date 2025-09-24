@@ -431,14 +431,10 @@ const nextConfig: NextConfig = {
     title: 'FOCUS (TMAX)',
     category: '회사 프로젝트',
     thumbnail: '/projects/company/focus/thumbnail.jpeg',
-    description: 'Rule Engine과 커스텀 설정을 추가하여 고객에게 개인화된 CRM, E-Commerce, BI 플랫폼 제공',
-    longDescription: `TMAX에서 진행한 대규모 엔터프라이즈급 프로젝트로, 약 60명의 팀원이 참여했습니다.
-
-소비자의 규칙을 결정하는 Rule Engine과 커스텀 설정을 추가하여 고객에게 개인화된 CRM, E-Commerce, BI 플랫폼을 제공하는 프로젝트입니다.
-
-React, TypeScript, TanStack Query, MobX를 활용하여 복잡한 상태 관리와 데이터 페칭을 효율적으로 처리했습니다.
-
-특히 동적 Form 구현과 대용량 상품 등록 및 관리 화면 구현을 담당했습니다.`,
+    description: 'CRM, E-Commerce, BI 플랫폼을 한번에 제공하는 프로젝트',
+    longDescription: `TMAX에서 진행한 대규모 프로젝트로, 약 60명의 팀원이 참여했습니다.
+고객에게 개인화된 CRM, E-Commerce, BI 플랫폼을 한번에 제공하는 프로젝트입니다.
+`,
     period: '2023.07 - 2024.12',
     team: '약 60명 (FE, BE, 인프라, 기획자, 디자이너, QA 등)',
     role: '프론트엔드',
@@ -446,9 +442,9 @@ React, TypeScript, TanStack Query, MobX를 활용하여 복잡한 상태 관리�
       'React', 'TypeScript', 'TanStack Query', 'MobX', 'Emotion', 'mui', 'react-hook-form'
     ],
     achievements: [
-      'React Hook Form을 활용한 다양한 상품 등록 Form 구현',
+      '상품의 "단일/복합/결합" 여부와 가격정책 "일반/구독/렌탈/좌석" 종류와 옵션 입력값에 따른 등록 Form 구현',
       'Form의 입력과 사용자 상호작용에 따른 동적인 Input 생성과 상태관리 구현',
-      'MobX를 활용한 개별 Row 관리가 용이하도록 구현',
+      'MobX를 활용한 개별 상품 Row를 객체화 하여 관리가 용이하도록 구현',
       '대용량 데이터 성능을 위한 Table 가상화, EventListener의 위임 구현',
       '복사 붙여넣기, 드래그, 우클릭 메뉴 등이 사용 가능한 대용량 상품 등록 및 관리 기능 구현',
       '블록 코딩같이 생긴 Rule Engine 적용 화면 설계 및 구현'
@@ -456,7 +452,7 @@ React, TypeScript, TanStack Query, MobX를 활용하여 복잡한 상태 관리�
     challenges: [
       '엑셀 형태의 대용량 상품 수정 화면에서 성능 이슈를 Table 가상화와 이벤트 위임으로 해결',
       '다양한 Form 입력과 상호작용에 따른 동적 Input 생성의 복잡한 상태 관리를 MobX로 효율화',
-      'Rule Engine 작동 방식에 맞게 고객이 소핑몰 설정할 수 있는 화면 기획 및 설계의 어려움을 단계적 접근으로 해결'
+      'Rule Engine 작동 방식에 맞게 고객이 쇼핑몰 설정할 수 있는 화면 기획 및 설계의 어려움을 단계적 접근으로 해결'
     ],
     features: [
       {
@@ -466,7 +462,7 @@ React, TypeScript, TanStack Query, MobX를 활용하여 복잡한 상태 관리�
         images: ['/projects/company/focus/thumbnail.jpeg']
       },
       {
-        title: '대용량 데이터 처리',
+        title: '대용량 상품 데이터 화면 처리',
         description: 'Table 가상화와 이벤트 위임을 통해 대용량 상품 데이터를 효율적으로 처리하고, 복사/붙여넣기, 드래그 등의 사용자 경험을 제공합니다.',
         images: ['/projects/company/focus/thumbnail.jpeg']
       },
@@ -504,14 +500,15 @@ TypeScript, TanStack Query, MobX, Emotion을 활용하여 모던한 웹 애플�
     ],
     achievements: [
       'Render Props 방식의 Select, Headless 방식의 Popover 컴포넌트 구현',
-      'React-dnd를 활용한 순서 조정 기능 구현',
-      '민원 유형별 담당자 티사람 경우, 민원 진행 중간에 민원 유형이 편집 및 삭제될 경우 등의 세부 상황에 대한 기획 보충',
+      'React-dnd를 활용한 민원 유형 순서 조정 기능 구현',
       '유형별 Form에 따라 민원을 생성하는 화면 구현',
+      '민원 통계 화면 구현',
       '조직도를 통합으로 관리할 수 있는 모듈 구현'
     ],
     challenges: [
-      '원하는 조직도 정보를 창된 시간 복잡도로 찾도록 개선하여 편의성 제고',
-      '조직도 정보를 형식에 맞춰 쉽게 출력할 수 있도록 개발 편의성 제고'
+      '조직도 정보를 형식에 맞춰 쉽게 출력할 수 있도록 개발 편의성 제고',
+      '기획된 디자인에 적합한 방식의 공통 컴포넌트 제작',
+      '민원 통계 데이터 타입 공통화 및 파싱 함수 구현'
     ],
     features: [
       {
@@ -562,18 +559,16 @@ FSD 아키텍처를 적용하여 체계적인 프로젝트 구조를 설계했�
     ],
     achievements: [
       'Git 브랜치 전략 및 컨벤션 설정을 통한 체계적인 프로젝트 관리',
-      '티켓, 회의록 관리를 통한 효율적인 소통',
-      'JIRA 컨벤션, 파이프라인 설정으로 개발 프로세스 표준화',
       '기획서를 상세 메뉴를 보여주는 트리구조 I.A.로 작성하여 문서 관리 효율화',
       'FSD 아키텍처 기반 프론트엔드 구조 설계',
-      '디자인 시스템 도큐먼트 정립 프로세스 건의 및 추가',
+      '디자인 시스템 구축',
       'msw를 활용한 MockApi 개발도구 추가',
-      'Husky로 커밋 메시지 템플릿과 자동완성 및 lint-stage 검사 구현'
     ],
     challenges: [
-      '기획서를 트리구조 I.A. 그림으로 관리하도록 하여 문서 관리 효율화 달성',
+      '기획서를 트리구조 I.A. 그림으로 관리하여 기획자 없이 문서 관리 효율화 달성',
       'FSD 아키텍처 기반 프론트엔드 구조 설계로 유지보수성 향상',
-      'Git 메시지 템플릿과 Git hook으로 GIT 커밋 메시지 일관화'
+      'Git 메시지 템플릿과 Git hook으로 GIT 커밋 메시지 일관화',
+      '디자이너와 협업하여 다국어 지원 디자인 시스템 구축 및 체계화',
     ],
     links: {
       github: 'https://github.com/chit-a-chat/FE'
