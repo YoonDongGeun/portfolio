@@ -134,7 +134,7 @@ export default function Home() {
                 <div>
                   <h4 className="text-xl font-semibold text-white mb-4">교육</h4>
                   <ul className="space-y-2 text-white/80">
-                    <li>• SSAFY 9기 수료 (2022.07 - 2023.06)</li>
+                    <li>• SSAFY 8기 수료 (2022.07 - 2023.06)</li>
                   </ul>
                 </div>
               </div>
