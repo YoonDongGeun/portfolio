@@ -53,7 +53,7 @@ export default function Home() {
       <header className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
         <nav className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold text-white">윤동근 Portfolio</h1>
+            <h1 className="text-xl font-bold text-white">윤동근 포트폴리오</h1>
             <div className="hidden md:flex space-x-8">
               <a href="#about" className="text-white/80 hover:text-white transition-colors">About</a>
               <a href="#skills" className="text-white/80 hover:text-white transition-colors">Skills</a>
@@ -68,19 +68,20 @@ export default function Home() {
         <section className="min-h-screen flex items-center justify-center text-center px-6">
           <div className="max-w-4xl">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-              안녕하세요,
+              안녕하세요.
               <br />
+              개발자&nbsp;
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 윤동근
               </span>
               입니다
             </h1>
             <p className="text-xl md:text-2xl text-white/80 mb-8 leading-relaxed">
-              컴포넌트부터 아키텍처까지<br/>
-              설계할 수 있는 개발자가 되고있습니다.
+              아키텍처부터 코드까지 적절히 설계하여<br/>
+              개발자들과 사용자 모두에게 좋은 경험을 주고싶은 개발자입니다.
             </p>
 
-            <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 mb-8 max-w-2xl mx-auto">
+            {/* <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 mb-8 max-w-2xl mx-auto">
               <h3 className="text-lg font-semibold text-white mb-4 text-center">개발 원칙</h3>
               <div className="space-y-3 text-white/80">
                 <div className="flex items-start gap-3">
@@ -96,7 +97,7 @@ export default function Home() {
                   <span>시간, 능력, 자원은 한정적이다. 상황에 맞게 완성해라.</span>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#projects"
@@ -121,12 +122,13 @@ export default function Home() {
               <div>
                 <h3 className="text-2xl font-semibold text-white mb-4">저는 누구인가요?</h3>
                 <p className="text-white/80 mb-6 leading-relaxed">
-                  TMAX에서 FOCUS 프로젝트에 참여하여 CRM, E-Commerce, BI 플랫폼을 개발했었습니다.
-                  현재는 프론트엔드 개발자로서 개인 블로그를 제작 및 운영하며 경험을 쌓고 있습니다.
+                  1년 6개월간 CRM, 이커머스 플랫폼을 개발했었습니다.
+                  <br/>
+                  현재는 개인 블로그를 제작 및 운영하며 경험을 쌓고 있습니다.
                 </p>
                 <p className="text-white/80 leading-relaxed">
-                  저는 문제 해결을 위해 공부하고 적용하는 것을 즐깁니다. 그래서 에어컨 냉매 충전, 인테리어 실측 후 온라인 배치, CCTV와 녹화기 설치 및 네트워크 구축 등 다양한 경험을 했습니다.
-                  <br/>그래서 문제 해결을 바로 확인할 수 있는 코딩을 좋아합니다.
+                  저는 문제를 해결해내고 많은 보람을 느낍니다. 
+                  <br/>그래서 문제 해결 여부를 빠르게 확인할 수 있는 코딩을 좋아하게 되었습니다.
                 </p>
               </div>
               <div className="bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 space-y-6">
