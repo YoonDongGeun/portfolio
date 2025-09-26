@@ -80,24 +80,6 @@ export default function Home() {
               아키텍처부터 코드까지 적절히 설계하여<br/>
               개발자들과 사용자 모두에게 좋은 경험을 주고싶은 개발자입니다.
             </p>
-
-            {/* <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 mb-8 max-w-2xl mx-auto">
-              <h3 className="text-lg font-semibold text-white mb-4 text-center">개발 원칙</h3>
-              <div className="space-y-3 text-white/80">
-                <div className="flex items-start gap-3">
-                  <span className="text-blue-400 font-bold">1.</span>
-                  <span>코드와 설계에 정답은 없다. Trade-off일 뿐이다.</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-blue-400 font-bold">2.</span>
-                  <span>남탓 전에 함께 해결하는 시도와 마음가짐을 갖자.</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-blue-400 font-bold">3.</span>
-                  <span>시간, 능력, 자원은 한정적이다. 상황에 맞게 완성해라.</span>
-                </div>
-              </div>
-            </div> */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#projects"
@@ -130,6 +112,11 @@ export default function Home() {
                   저는 문제를 해결해내고 많은 보람을 느낍니다. 
                   <br/>그래서 문제 해결 여부를 빠르게 확인할 수 있는 코딩을 좋아하게 되었습니다.
                 </p>
+                 <br/>
+                <p className="text-white/80 leading-relaxed">
+                  서로에게 배우고 함께 협력하여 더 나은 결과를 만들어갈 수 있으면 좋겠습니다.
+                  <br/> 언제나 더 좋은 동료가 되기위해 노력하겠습니다.
+                </p> 
               </div>
               <div className="bg-white/5 backdrop-blur-lg rounded-xl p-8 border border-white/10 space-y-6">
                 <div>
