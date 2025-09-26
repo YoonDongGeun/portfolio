@@ -77,7 +77,7 @@ export default function Home() {
               입니다
             </h1>
             <p className="text-xl md:text-2xl text-white/80 mb-8 leading-relaxed">
-              여러분과 좋은 코드, 설계에 대해 토론도 하고 배우고 싶고<br/>
+              코드와 설계에 대해 함께 이야기하고 배우며<br/>
               개발자들과 사용자 모두에게 좋은 경험을 주고싶은 개발자입니다.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
