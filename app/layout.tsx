@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "윤동근 포트폴리오",
     images: [
       {
-        url: "/personal/thumbnail.png", // OG 이미지 경로
+        url: "/thumbnail.png", // OG 이미지 경로
         width: 1200,
         height: 630,
         alt: "윤동근 포트폴리오 대표 이미지",
