@@ -11,7 +11,7 @@ export const projectsData = [
 
 백엔드는 Spring Boot 3, Spring Security 6, JPA를 사용하여 RESTful API를 구현했고, Redis와 MySQL을 활용한 캐싱과 데이터 관리를 구현했습니다.
 
-사용자 경험을 위해 Critical CSS 적용, Layout Shift 최적화, ISR 기반 캐싱 등 다양한 성능 최적화 기법을 적용했습니다.`,
+사용자 경험을 위해 Critical CSS 적용, Layout Shift 최적화, 스크립트를 통한 FOUC 최소화, Webpack 코드 스플릿, ISR 기반 캐싱 등 다양한 성능 최적화 기법을 적용했습니다.`,
     period: '2025.01 - 현재 진행 중',
     team: '개인 프로젝트',
     role: '풀스택',
@@ -22,16 +22,17 @@ export const projectsData = [
     ],
     achievements: [
       '직접 구현한 커스텀 Tiptap 기반 텍스트 에디터로 다양한 플러그인 지원 (코드 블록, 이미지, YouTube, CodePen 등)',
-      'Critical CSS 적용으로 첫 렌더링 시 사용자 경험 및 FCP 최적화',
-      'Layout Shift 유발하는 컴포넌트 고정 크기 적용으로 CLS 최소화',
+      'Critical CSS 적용으로 첫 렌더링 시 사용자 경험 개선 및 FCP 최적화',
+      '랜딩시 출력 이미지 prerendering 적용으로 홈 화면 LCP 최적화',
+      '컴포넌트 CSS로 CLS 유발 요소 최소화',
       'ISR 기반 캐싱과 페이지네이션으로 빠른 게시글 로딩',
       'SEO 최적화를 위한 메타 데이터, robot.txt, Sitemap 추가',
       'ZAP 웹 취약성 검사 및 HTTP Header 보안성 테스트를 통한 보안 강화'
     ],
     challenges: [
-      '에디터와 뷰어의 별도 관리로 툴의 기능 동기화가 어려웠지만, HTML 파싱 방식을 개선하여 해결',
-      'Tiptap 라이브러리의 방대한 문서 때문에 러닝커브가 높았지만, 점진적 학습으로 극복',
-      '이미 불러와서 출력한 댓글을 실시간으로 변경사항 수정 출력이 불가했지만, 변경사항을 감지하는 WebSocket 구현으로 해결'
+      '에디터의 Viewer 출력 방식을 JSON 파싱에서 HTML 파싱 방식으로 변경하여 ISR 성능 개선',
+      "번들 분석을 통한 코드 스플링팅과 레이지 임포트 방식으로 네트워크 요청 수와 사이즈 최적화",
+      'Tiptap(ProseMirror) 라이브러리의 방대한 문서 때문에 러닝커브가 높았지만, 점진적 학습으로 극복 및 커스텀 Extension 구현',
     ],
     links: {
       demo: 'https://yooncarrot.com',
@@ -43,73 +44,64 @@ export const projectsData = [
     ],
     features: [
       {
-        title: '커스텀 에디터',
-        description: `Tiptap 기반의 커스텀 텍스트 에디터로 OCP 원칙이 잘 지켜진 에디터입니다. 그래서 Extension를 변경해서 사용하거나, 직접 구현해서 기능을 추가할 수 있습니다.\n가장 많은 시간을 사용하여 만든 Extension은 Syntax Highlighter 기능이 들어간 코드블럭입니다.`,
+        title: '커스텀 에디터와 Viewer 출력 최적화',
+        description: `보통 에디터 데이터는 JSON으로 저장 후 파싱하여 출력합니다. 하지만 코드 출력 시에는 별도의 코드 하이라이터가 필요해 번들이 무거워지는 문제가 있습니다.
+
+이를 해결하기 위해 코드 하이라이팅 정보까지 포함된 HTML을 생성하고, 이를 Viewer와 Editor 데이터로 함께 활용할 수 있는 Custom Extension을 개발했습니다.
+
+그 결과 JSON 대신 HTML 데이터만 저장하면 되며, 데이터 크기는 기존 대비 2배 이상 축소되었습니다. 실제로 14만자 분량의 게시글을 기준으로 ISR 시간 약 30ms 단축, 게시글 50개를 SSG할 경우 빌드 시간 약 11% 단축 효과를 얻을 수 있었습니다.`,
         images: [
-          '/projects/personal/yooncarrot/image7.png',
+          '/projects/personal/yooncarrot/editor.png',
+          '/projects/personal/yooncarrot/json-build.png',
+          '/projects/personal/yooncarrot/html-build-time.png',
+          '/projects/personal/yooncarrot/json-build-time.png',
+           
         ],
         codeSnippets: [{
-          title: 'Tiptap의 확장성 높은 구조',
+          title: '에디터 데이터로 그대로 사용될 수 있는 html 문서',
           language: 'typescript',
-          description: 'Tiptap의 훌륭한 책임분리와 캡슐화로 편리한 기능 확장과 제거',
-          code: `export const EDITOR_EXTENSIONS: (
-  apiServerUrl: string,
-  fileServerUrl: string,
-  editorAppId: string,
-  editorAppJwt: string,
-) => Extensions = (apiServerUrl, fileServerUrl, editorAppId, editorAppJwt) => [
-  /* 문서 구조 */
-  CustomDocument,
+          description: '보통 syntax highliting은 따로 처리하지만, 해당 정보까지 저장될 수 있는 html 문서',
+          code: `// 1. json 데이터 사용 시(최적화 전, JSON => HTML 변환 필요)
+export default async function Page({params}: PageProps) {
+  const articleId = (await params).articleId;
+  const article = await getArticle(articleId);
+  if (!article) notFound();
+  const numericArticleId = parseInt(articleId);
+  const parsedArticleJson = JSON.parse(article.json);
+  const contentJson = parsedArticleJson.content;
+  const content = await getHtmlWithJson(contentJson); // JSON => Html String 변환, code 출력 시 highligter 라이브러리 필요.
+  return (
+    <>
+      <Article article={article}>
+        <ServerTextViewer content={content} />
+      </Article>
+      <CommentList articleId={numericArticleId} />
+      {/* LightBox 이미지 Viewer */}
+      <LightBox />
+    </>
+  );
 
-  /* 기본 스타터 킷 */
-  CONFIGURED_STARTER_KIT,
-
-  /* 블록 레벨 요소 */
-  CustomHeading, // 헤딩
-  CustomBlockquote, // 블록 인용
-  BulletList,
-  OrderList,
-  ListItem, // 리스트
-  ConfiguredTaskItem,
-  TaskList, // 체크리스트
-  CustomCodeBlock,
-  CustomCodeLine, // 코드 블록
-
-  /* 디테일/접기 */
-  CustomDetail,
-  DetailsSummary,
-  ConfiguredDetailsContent,
-
-  /* 인라인 스타일 / 마크 */
-  CustomItalic,
-  Underline,
-  Subscript,
-  Superscript,
-  ConfiguredTextStyle,
-  ConfiguredHighlight,
-  Color,
-
-  /* 링크 */
-  CustomLink,
-
-  /* 미디어 / 임베드 */
-  CustomImage,
-  CustomIframe,
-  CustomFileHandler(apiServerUrl, fileServerUrl),
-
-  /* 유틸리티 */
-  ConfiguredPlaceholder,
-  ConfiguredSlashCommand,
-  ConfiguredExport(editorAppId, editorAppJwt),
-  Focus,
-  ConfiguredInvisibleCharacters,
-  ConfiguredTextAlign,
-  ListKeymap, // 리스트 단축키
-];`
+// 2. html 그대로 사용 시(최적화 후, HTML 그대로 사용하지만, Editor에 삽입 시 수정 데이터 그대로 출력)
+export default async function Page({params}: PageProps) {
+  const articleId = (await params).articleId;
+  const article = await getArticle(articleId);
+  if (!article) notFound();
+  const numericArticleId = parseInt(articleId);
+  return (
+    <>
+      <Article article={article}>
+        <ServerTextViewer content={article.content} /> // article.content가 html string을 바로 받음.
+      </Article>
+      <CommentList articleId={numericArticleId} />
+      {/* LightBox 이미지 Viewer */}
+      <LightBox />
+    </>
+);}`
 }]},
   {
     title: '크로스 탭 디자인 시스템',
-    description: `브라우저 탭간 상태 공유가 되는 Custom Theme 적용이 가능한 디자인 시스템입니다.\n커스텀 테마 설정에 따라 블로그 색상이 변하고 저장/되돌리기/삭제를 하면 모든 브라우저 탭에 적용됩니다.`,
+    description: `브라우저 탭간 상태 공유가 되는 Custom Theme 적용이 가능한 디자인 시스템입니다.\n커스텀 테마 설정에 따라 블로그 색상이 변하고 저장/되돌리기/삭제를 하면 모든 브라우저 탭에 적용됩니다.
+테마 설정의 탭간 공유를 위해서 localStorage와 리액트 상태가 공유되고, 이 상태 변경은 BroadCastChannel을 통해 탭으로 전파됩니다.`,
     images: [
       '/projects/personal/yooncarrot/image9.png',
       '/projects/personal/yooncarrot/image10.png',
@@ -195,7 +187,7 @@ export const useSyncLocalStorage = <K extends string, V extends string>(
       },
       {
         title: 'SEO 최적화',
-        description: 'Next.js ISR을 활용한 페이지 캐싱과 메타 데이터, robot.txt, Sitemap를 사용하여 SEO를 했습니다.',
+        description: 'Next.js ISR을 활용한 페이지 캐싱과 메타 데이터, robot.txt, Sitemap을 사용하여 SEO를 했습니다.',
         images: [
           '/projects/personal/yooncarrot/image14.png',
           '/projects/personal/yooncarrot/image13.png',
@@ -212,19 +204,16 @@ export async function generateMetadata(
 
   const articleId = (await params).articleId;
   const article = await getArticle(articleId);
+  if (!article) notFound();
 
-  if (isUnValidArticle(article)) notFound();
+  const categories = article.category.path.split(" > ");
 
-  const [_all, ...categories] = article.category.path.split(" > ");
   // 키워드: 라벨 + 카테고리
-  const keywords = article.labels.concat(categories);
-  // 썸네일이 있으면 썸네일, 없으면 parent의 이미지 유지
-  const images = article.thumbnail
-    ? createThumbnailImage(article.thumbnail)
-    : (await parent).openGraph?.images || [];
+  const keywords = [...article.labels, categories];
 
   // 설명 250자 자르고 "..." 붙이기
-  const trimmedDesc = article.preview.replace(/\\n/g, " ").slice(0, 250) + "...";
+  const trimmedDesc = article.preview.slice(0, 250) + "...";
+
   return {
     title: article.title,
     description: trimmedDesc,
@@ -232,7 +221,7 @@ export async function generateMetadata(
     openGraph: {
       title: article.title,
       description: trimmedDesc,
-      images: images,
+      images: article.thumbnail,
       type: "article",
       authors: article.author.name,
       publishedTime: article.createdAt,
@@ -248,33 +237,25 @@ export async function generateMetadata(
 export async function generateStaticParams() {
   const articleIds = await getArticleIds();
   return articleIds.map(id => ({articleId: String(id)}));
-}
+}`},
+{
+          title: 'Site Map 생성',
+          language: 'typescript',
+          description: 'Bot이 모든 페이지 탐색할 수 있도록 Site Map 동적 생성',
+          code: `export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Category Sitemap
+  const categories  = await getCategories({ revalidate: 3600 });
+  const categoryEntries = parseCategory(categories);
 
-export const revalidate = 1200;
-export const dynamicParams = true;
+  // Article Sitemap
+  const articleIds = await getArticleIds({revalidate:3600});
+  const articleEntries = parseArticles(articleIds);
 
-type PageProps = {
-  params: Promise<{articleId: string}>;
-};
-export default async function Page({params}: PageProps) {
-  const articleId = (await params).articleId;
-  const article = await getArticle(articleId);
+  // Static Pages
+  const staticEntries = getStaticEntries();
 
-  if (isUnValidArticle(article)) notFound();
-
-  const numericArticleId = parseInt(articleId);
-  return (
-    <>
-      <Article article={article}>
-        <ServerTextViewer content={article.content} />
-      </Article>
-      <CommentList articleId={numericArticleId} />
-      {/* LightBox 이미지 Viewer */}
-      <LightBox />
-    </>
-  );
-}`
-        }]
+  return [...staticEntries, ...categoryEntries, ...articleEntries];
+}`}]
       },
       {
         title: '안전한 HTTP 헤더',
@@ -289,15 +270,16 @@ export default async function Page({params}: PageProps) {
           title: '보안',
           language: 'typescript',
           description: '보안을 위한 헤더 설정',
-          code: `const cspHeader = \`
-      default-src 'self' blob: gap: data: content: https://accounts.google.com \${BACK_SERVER_URL} https://www.google-analytics.com https://fastly.jsdelivr.net https://fonts.gstatic.com https://fonts.googleapis.com https://api.tiptap.dev/v1/convert/export https://*.googletagmanager.com;
-      script-src 'self' 'wasm-unsafe-eval' 'unsafe-eval' https://accounts.google.com https://cdn.ampproject.org https://www.google-analytics.com\${IS_PROD_ENV ? "" : " 'unsafe-eval'"} https://*.googletagmanager.com;
-      script-src-elem 'self' 'unsafe-inline' https://*.googletagmanager.com https://accounts.google.com https://cdn.ampproject.org https://www.google-analytics.com;
-      style-src 'self' https://accounts.google.com 'unsafe-inline' https://www.googletagmanager.com;
-      frame-src 'self' https://accounts.google.com https://www.youtube.com https://youtube.com https://youtu.be https://codepen.io \${BACK_SERVER_URL};
-      frame-ancestors 'none';
-      form-action 'self' \${BACK_SERVER_URL};
-  \`;
+          code: `// csp 헤더 코드
+const cspHeader = \`
+  default-src 'self' blob: gap: data: content: https://accounts.google.com \${BACK_SERVER_URL} https://www.google-analytics.com https://fastly.jsdelivr.net https://fonts.gstatic.com https://fonts.googleapis.com https://api.tiptap.dev/v1/convert/export https://*.googletagmanager.com;
+  script-src 'self' 'wasm-unsafe-eval' 'unsafe-eval' https://accounts.google.com https://cdn.ampproject.org https://www.google-analytics.com\${IS_PROD_ENV ? "" : " 'unsafe-eval'"} https://*.googletagmanager.com;
+  script-src-elem 'self' 'unsafe-inline' https://*.googletagmanager.com https://accounts.google.com https://cdn.ampproject.org https://www.google-analytics.com;
+  style-src 'self' https://accounts.google.com 'unsafe-inline' https://www.googletagmanager.com;
+  frame-src 'self' https://accounts.google.com https://www.youtube.com https://youtube.com https://youtu.be https://codepen.io \${BACK_SERVER_URL};
+  frame-ancestors 'none';
+  form-action 'self' \${BACK_SERVER_URL};
+\`;
 const nextConfig: NextConfig = {
   async headers() {
     return [
@@ -352,41 +334,125 @@ const nextConfig: NextConfig = {
     ];
   }
 }`
-        }]
-      },
+}]
+},
       {
         title: '성능 최적화',
-        description: `Critical CSS 적용, Layout Shift 최적화, ISR 기반 캐싱, Lazy Load, NextJS의 Dynamic Import, Webpack 코드 스플릿팅 등 다양한 성능 최적화 기법을 적용했습니다.
-특히 폰트, 동적 테마 디자인 시스템 등으로 인한 FOUC는 성능 측정으로도 잡히지 않는 문제라서 더 신경을 썼습니다. FOUC를 해결하기 위해 React 혹은 NextJS의 라이프사이클에서 벗어난 코드를 짜기도 했습니다.`,
+        description: `Critical CSS 적용, Layout Shift 최적화, ISR 기반 캐싱, Lazy Load, Next.js Dynamic Import, Webpack 코드 스플리팅 등 다양한 성능 최적화를 진행했습니다.
+Code Split과 Lazy Import를 통해 첫 진입 번들 사이즈를 9%, 공통 번들을 40% 줄였으며, 홈 화면 라우팅 시 필요한 JS 사이즈는 327KB → 145KB(약 55% 감소)로 최적화했습니다.
+
+또한 네트워크 요청 체인 개선과 Critical CSS 적용으로 FCP 성능을 향상시켰고, 랜딩 이미지에는 eager loading을 적용하여 LCP를 1.1초 → 0.8초로 단축했습니다.
+
+동적 테마 디자인 시스템에서 발생하는 FOUC 문제는 성능 측정 도구로는 드러나지 않기 때문에 별도로 신경 썼습니다. 이를 해결하기 위해 React와 Next.js의 일반적인 라이프사이클을 벗어난 방식을 도입해 안정적인 화면 렌더링을 구현했습니다.`,
         images: [
-          '/projects/personal/yooncarrot/image11.png',
-          '/projects/personal/yooncarrot/image12.png',
+          '/projects/personal/yooncarrot/perf-after.png',
+          '/projects/personal/yooncarrot/bundle-before.png',
+          '/projects/personal/yooncarrot/bundle-after.png',
+          '/projects/personal/yooncarrot/tree-before.png',
+          '/projects/personal/yooncarrot/tree-after.png',
+          '/projects/personal/yooncarrot/critical.png',
         ],
         codeSnippets: [{
-          title: 'FOUC 방지를 위한 코드들',
+          title: 'Webpack 코드 스플릿',
           language: 'typescript',
-          description: 'NextJS는 하이드레이션 과정을 필요로 하기 때문에, FOUC 방지를 위해 React 라이프사이클에서 벗어난 코드를 작성했습니다.',
-          code: `export default function HTMLRegistry() {
-          return (
-          <>
-              {/* 크리티컬 CSS */}
-              <style>{styleContent}</style>
-              {/* SSR 하이드레이션 전, FOUC 방지용 스크립트와 스타일 */}
-              <style
-                id="custom-foundation"
-                dangerouslySetInnerHTML={{__html: ""}}
-                suppressHydrationWarning
-              />
-              <script
-              dangerouslySetInnerHTML={{
-                __html: \`const theme = localStorage.getItem("theme"); const systemTheme = matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"; document.documentElement.className=theme || systemTheme; document.getElementById("custom-foundation").innerHTML = localStorage.getItem("foundation") ?? "";\`,
-              }}
-              key={"theme-1"}
-              suppressHydrationWarning
-            />
-          </>
-          )
-        }`
+          description: 'bundle-analyzer와 Lighthouse 트리맵을 이용하여 자주 함께 사용되는 코드들 중 스플릿이 가능한 경우 묶어서 네트워크 요청과 번들 크기를 최소화 했습니다.',
+          code: `// next 설정 예시
+webpack: (config, {isServer, webpack}) => {
+  if (!isServer) {
+    // client가 안쓸 기능 제거
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+    };
+  }
+  config.optimization = {
+    ...config.optimization,
+    splitChunks: {
+      ...config.optimization.splitChunks,
+      cacheGroups: {
+        ...config.optimization.splitChunks.cacheGroups,
+        utils: {
+          test: /[\\/]node_modules[\\/](axios|dayjs)[\\/]/,
+          name: "utils-vendor",
+          chunks: "all",
+          priority: 35,
+          reuseExistingChunk: true,
+        },
+        recharts: {
+          test: /[\\/]node_modules[\\/](recharts|d3-scale|d3-array|d3-time|d3-shape)[\\/]/,
+          name: "recharts-vendor",
+          chunks: "async",
+          priority: 35,
+          enforce: true,
+        },
+        sentry: {
+          test: /[\\/]node_modules[\\/]@sentry[\\/]/,
+          name: "sentry-vendor",
+          chunks: "all",
+          priority: 35,
+          enforce: true,
+          reuseExistingChunk: true,
+        },
+      }
+    }
+  }
+  return confing
+}`
+},{
+  title: 'FCP, LCP, FOUC 개선을 위한 코드들',
+  language: 'typescript',
+  description: 'NextJS는 하이드레이션 과정을 필요로 하기 때문에, FOUC 방지를 위해 React 라이프사이클에서 벗어난 코드를 작성했습니다. 또한 critical CSS및 이미지 컨텐츠의 Priority 설정을 했습니다.',
+  code: `// LCP 요소를 고려한 컴포넌트
+export const HomeArticleCardList = ({articles}: {articles: TArticle[]}) => {
+  return (
+    <Carousel
+      items={articles}
+      itemClassName={"basis-11/12 md:basis-3/7 xl:basis-1/3"}
+      noTouchMedia={"(min-width: 1280px)"}
+      isFocus={false}
+      renderItem={({item: article}) => ( // items attribute 타입에 자동으로 맞춰지는 제네릭 타입 
+        <ArticleCard
+          key={\`article-\${article.id}\`}
+          as="div"     // 접근성을 위한 polymorphic 속성
+          article={article}
+          isLCP={true} // LCP에 영향을 주는 요소(첫 렌더링 화면에 항상 보이는 요소)를 위한 설정값
+        />
+      )}
+    />
+  );
+};
+
+// FOUC 개선을 위해 React Lift Cycle에 벗어난 코드들 
+export default function HTMLRegistry() {
+    return (
+      <>
+        {/* SSR 하이드레이션 전, Custom Theme의 FOUC 방지용 스크립트와 스타일 */}
+        <style
+          id="custom-foundation"
+          dangerouslySetInnerHTML={{__html: ""}}
+          suppressHydrationWarning
+        />
+        <script
+          id="theme-script"
+          dangerouslySetInnerHTML={{
+            __html: \`const theme = localStorage.getItem("theme"); const systemTheme = matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"; document.documentElement.className=theme || systemTheme; document.getElementById("custom-foundation").innerHTML = localStorage.getItem("foundation") ?? "";\`,
+          }}
+          suppressHydrationWarning
+        />
+      </>
+    )
+  }
+
+// FCP를 위한 크리티컬 CSS 설정, 기존에 수동으로 적용했던 것을 최근에 생긴 inlineCss 속성 활용
+const nextConfig = {
+  experimental: {
+    inlineCss: true,
+  }
+}
+
+ `
         }]
       },
       {
@@ -419,7 +485,6 @@ const nextConfig: NextConfig = {
     ],
     images: [
       '/projects/personal/yooncarrot/thumbnail.png',
-      '/projects/personal/yooncarrot/image7.png',
 
     ],
     codeSnippets: [
@@ -432,8 +497,8 @@ const nextConfig: NextConfig = {
     category: '회사 프로젝트',
     thumbnail: '/projects/company/focus/thumbnail.jpeg',
     description: 'CRM, E-Commerce, BI 플랫폼을 한번에 제공하는 프로젝트',
-    longDescription: `TMAX에서 진행한 대규모 프로젝트로, 약 60명의 팀원이 참여했습니다.
-고객에게 개인화된 CRM, E-Commerce, BI 플랫폼을 한번에 제공하는 프로젝트입니다.
+    longDescription: `사내 메인 프로젝트로, 약 60명의 팀원이 참여했습니다.
+고객에게 CRM, E-Commerce, BI 플랫폼을 한번에 제공하는 것이 목표였습니다. 주된 차별점은 고객이 비즈니스 로직을 커스텀할 수 있으며, 모든 상품 종류를 팔 수 있게 제공해줄 수 있고, 매우 쉽게 서비스를 구축할 수 있게 해주는 것이였습니다.
 `,
     period: '2023.07 - 2024.12',
     team: '약 60명 (FE, BE, 인프라, 기획자, 디자이너, QA 등)',
@@ -456,20 +521,65 @@ const nextConfig: NextConfig = {
     ],
     features: [
       {
+        title: '대용량 상품 데이터 화면 처리',
+        description: `Table 가상화와 이벤트 위임을 통해 대용량 상품 데이터를 효율적으로 처리하고, 복사/붙여넣기, 드래그 등의 사용자 경험을 제공합니다.
+500줄 이상의 테이블의 경우 Table 가상화를 통해 렌더링 시간을 90% 이상 절약할 수 있었습니다. 다만 스크롤을 내릴때마다 렌더링을 계쏙 다시 하기 때문에 사용성에는 악영향이 있었습니다. 
+그리고 화면 구성과 기능이 복잡하여 MobX 스토어를 활용해 객체 지향적으로 기능을 나눠설계했습니다.`,
+        images: ['/projects/company/focus/item.png'],
+        codeSnippets: [{
+          title: '대용량 상품 관리 Interface (기억을 간략히 재구성)',
+          language: 'typescript',
+          description: '대용량 상품을 관리하는데 엑셀처럼 관리할 수 있는 화면 구현이 목표이며, ERP의 제품을 상품으로 등록할 수 있으며, 복사 붙여넣기도 가능하다.',
+          code: `
+// Item
+class Item {
+  values: Record<string, ItemValue> = {}; // Item 속성이 매우 다채롭고, 고객이 커스텀 가능. (fix할 속성이 정해지면 field로 선언)
+  // 제품의 상태 : new | modifed | deleted | unchanged | null
+  state: ItemState;
+  // 테이블 저장 등의 작업 시 입력값 부족한 상품은 에러 표시용
+  errors: Record<string, boolean> = {};
+
+  constructor(values: Record<string, ItemValue>, state: ItemState = null) {
+    this.values = values;
+    this.state = state;
+    makeAutoObservable(this);
+  }
+  setter, getter, 검증 메서드 등등... 
+}
+
+// Item들을 관리하는 Store
+class ItemManagementStore {
+  this.filter: Filter; // 필터 위임 객체
+  constructor(categories: TCategory[]) {
+    this.categorySelects = makeCategorySelects(categories);
+    makeAutoObservable(this);
+  }
+  setter, getter, 상품 검색, 상품 필터링, 필터 초기화 등..
+}
+
+// 개별 엑셀의 Cell
+class SelectCell(카테고리 셀렉트용), class ChevronCell(복합/결합 상품 접고펼치기 셀), class ButtonCell(모달로 정보 입력할 수 있는 Cell) 등 기타 Excel 관련 셀
+
+// 엑셀
+<ItemGrid
+    handleCellsChanged={handleCellsChanged} // Cell단위 EventListener를 사용하지 않고 Grid에서 통합 관리.
+    virtualized // 가상화
+    items={items}
+/>
+`
+}]
+      },
+      {
         title: '상품 종류와 가격 정책에 따른 동적 Form',
         description: `React Hook Form과 MobX를 활용하여 사용자 상호작용에 따라 동적으로 Input이 생성되는 복잡한 상품 등록 폼을 구현했습니다. 예를 들어, 단일/복합/결합 상태와, 일반/구독/좌석/렌탈 가격 정책에 따라 Form이 동적으로 변합니다.
 또한 입력한 옵션에 따라서 여러 상품을 옵션별로 생성하며 Form이 변하기도 합니다.`,
         images: ['/projects/company/focus/thumbnail.jpeg']
       },
       {
-        title: '대용량 상품 데이터 화면 처리',
-        description: 'Table 가상화와 이벤트 위임을 통해 대용량 상품 데이터를 효율적으로 처리하고, 복사/붙여넣기, 드래그 등의 사용자 경험을 제공합니다.',
-        images: ['/projects/company/focus/thumbnail.jpeg']
-      },
-      {
-        title: 'Rule Engine 화면',
-        description: '블록 코딩 형태의 직관적인 Rule Engine 설정 화면을 구현하여 고객이 쉽게 비즈니스 로직을 설정할 수 있도록 했습니다.',
-        images: ['/projects/company/focus/thumbnail.jpeg']
+        title: 'Rule Engine',
+        description: `블록 코딩 형태의 직관적인 화면으로 비즈니스 로직을 설정할 수 있는 기능.
+예를 들면 야구에서 한화가 1등를 하면 [item.category == "야구 용품" && user.membership == "실버"]일때 [item.discount = 0.1]을 수행할 수 있도록 블록 코딩형태로 만들어 주는 기능이다.`,
+        images: ['/projects/company/focus/scratch.png']
       }
     ],
     links: {},
@@ -493,7 +603,7 @@ TypeScript, TanStack Query, MobX, Emotion을 활용하여 모던한 웹 애플�
 
 컴포넌트 기능에 적당한 방식의 공통 컴포넌트 제작과 드래그&드랍 순서 변경, 유형 변경이 가능한 민원 유형 관리 화면을 구현했습니다.`,
     period: '2024.03 - 2024.12',
-    team: 'FE 5명, BE 5명, 디자이너 2명, 기획자 3명, QA 2명, +타사 인원',
+    team: 'FE 5명, BE 5명, 디자이너 2명, 기획자 2명, QA 2명, +타사 인원',
     role: '프론트엔드',
     technologies: [
       'TypeScript', 'TanStack Query', 'MobX', 'Emotion', 'cypress', 'mui', 'react-hook-form', 'react-dnd', 'react-quill', 'xlsx'
@@ -506,9 +616,8 @@ TypeScript, TanStack Query, MobX, Emotion을 활용하여 모던한 웹 애플�
       '조직도를 통합으로 관리할 수 있는 모듈 구현'
     ],
     challenges: [
-      '조직도 정보를 형식에 맞춰 쉽게 출력할 수 있도록 개발 편의성 제고',
       '기획된 디자인에 적합한 방식의 공통 컴포넌트 제작',
-      '민원 통계 데이터 타입 공통화 및 파싱 함수 구현'
+      '민원 통계 데이터 타입 공통화 및 파싱 함수 구현',
     ],
     features: [
       {
@@ -523,7 +632,7 @@ TypeScript, TanStack Query, MobX, Emotion을 활용하여 모던한 웹 애플�
       },
       {
         title: '통합 조직도 관리 모듈',
-        description: '효율적인 조직도 검색 알고리즘과 형식화된 출력 시스템으로 개발 편의성을 높였습니다.',
+        description: `타사와의 협엽으로 DB연동이 힘들었습니다. 그래서 조직도를 한번에 받아와서 사용하는 방식을 써야했습니다. 그래서 조직도에서 원하는 정보를 효율적으로 찾아서 사용할 수 있어야했습니다. 그래서 조직도 관리와 출력을 위한 모듈을 만들어 개발 편의성을 높였습니다.`,
         images: ['/projects/company/krc/thumbnail.jpeg']
       },
       {
@@ -574,7 +683,7 @@ FSD 아키텍처를 적용하여 체계적인 프로젝트 구조를 설계했�
       github: 'https://github.com/chit-a-chat/FE'
     },
     architecture: [
-      '/projects/side/chitAChat/architecture.png'
+      '/projects/side/chitAChat/architecture.png',
     ],
     features: [
       {
@@ -582,7 +691,12 @@ FSD 아키텍처를 적용하여 체계적인 프로젝트 구조를 설계했�
         description: `React 외의 라이브러리를 사용하지 않고, 바닥부터 만드는 공통 컴포넌트로 디자인 시스템을 구축했습니다.
 솔직히 ShadCn 같은 라이브러리가 더 잘 만들어져 있겠지만, 직접 만들어보는 경험이 중요하다고 생각했습니다.
 직접 만들면서 Portal을 활용한 Select같은 컴포넌트의 리스트 포지셔닝, 접근성, UX 문제를 고민하고 해결 및 개선할 수 있었습니다.`,
-        images: ['/projects/side/chitAChat/image21.png'],
+        images: [
+          '/projects/side/chitAChat/Components.png',
+          '/projects/side/chitAChat/image33.png',
+          '/projects/side/chitAChat/image34.png',
+
+        ],
         codeSnippets: [{
           title: 'Portal의 AutoPosition을 위한 컴포넌트',
           language: 'typescript',
@@ -656,13 +770,13 @@ FSD 아키텍처를 적용하여 체계적인 프로젝트 구조를 설계했�
     </div>
   );
 };`,
-        }]
+}]
       },
       {
         title: '다국어 지원 (i18n)',
         description: `i18next를 활용하여 한국어, 영어(영국)를 지원하고 개발자 친화적으로 다국어를 관리할 수 있도록 했습니다.
 또한 언어 설정에 따라서 다른 font-family와 그 폰트에 맞는 디자인 시스템 토큰이 적용되도록 했습니다.`,
-        images: ['/projects/side/chitAChat/image22.png'],
+        images: ['/projects/side/chitAChat/thumbnail.png'],
         codeSnippets: [{
           title: '언어별 다국어 관리 타입',
           language: 'typescript',
@@ -737,8 +851,11 @@ const typoEn:Record<
       {
         title: 'FSD 아키텍처',
         description: `Feature-Sliced Design 아키텍처를 적용하여 체계적이고 확장 가능한 프론트엔드 구조를 설계했습니다.
-아키텍처에 따라 폴더와 파일을 구성하다보면, 자연스럽게 도메인별로 관심사 분리가 되고, 유지보수성과 확장성이 향상되는 효과가 있습니다. 물론 레이어의 구성과 들어갈 요소의 기준은 구성원간의 합의가 선행되어야 하며, 숙련도가 필요했습니다.`,
-        images: ['/projects/side/chitAChat/image23.png'],
+아키텍처에 따라 폴더와 파일을 구성하다보면, 자연스럽게 도메인별로 관심사 분리가 되고, 유지보수성과 확장성이 향상되는 효과가 있습니다. 물론 레이어의 구성과 들어갈 요소의 기준은 구성원간의 합의가 선행되어야 하며, 숙련도가 필요했습니다.
+이 당시에는 FSD 아키텍처를 쓰는 다른 프로젝트를 열심히 참고하여 사용했습니다. 하지만 최근 리팩터링, 디자인 패턴 등을 다시 공부하며 책에 적혀진 방법들을 알기 전에 스스로 설계하고 판단할 수 있는 능력이 우선되어야 함을 깨달았습니다.\n
+그래서 FSD 아키텍처를 정해진 틀로 사용하기 보다는 알아서 생각하고 응용할 수 있는 능력을 갖췄다고 생각합니다.
+`,
+        images: ['/projects/side/chitAChat/FSD.png'],
         codeSnippets: [{
           title: 'FSD 아키텍처 구조',
           language: 'typescript',
@@ -755,22 +872,10 @@ src
       }
     ],
     images: [
-      '/projects/side/chitAChat/image21.png',
-      '/projects/side/chitAChat/image22.png',
-      '/projects/side/chitAChat/image23.png',
-      '/projects/side/chitAChat/image24.png',
-      '/projects/side/chitAChat/thumbnail.png',
       '/projects/side/chitAChat/image26.png',
+     '/projects/side/chitAChat/image31.png',
       '/projects/side/chitAChat/image27.png',
-      '/projects/side/chitAChat/image28.png',
-      '/projects/side/chitAChat/image29.png',
-      '/projects/side/chitAChat/image30.png',
-      '/projects/side/chitAChat/image31.png',
-      '/projects/side/chitAChat/image32.png',
-      '/projects/side/chitAChat/image33.png',
-      '/projects/side/chitAChat/image34.png',
-      '/projects/side/chitAChat/image35.png',
-      '/projects/side/chitAChat/image36.png'
+      '/projects/side/chitAChat/image22.png',
     ],
     codeSnippets: []
   },

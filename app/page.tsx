@@ -77,7 +77,7 @@ export default function Home() {
               입니다
             </h1>
             <p className="text-xl md:text-2xl text-white/80 mb-8 leading-relaxed">
-              코드와 설계에 대해 함께 이야기하고 배우며<br/>
+              코드와 설계에 대해 함께 이야기하고 공부하며<br/>
               개발자들과 사용자 모두에게 좋은 경험을 주고싶은 개발자입니다.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -112,7 +112,7 @@ export default function Home() {
                   저는 문제를 해결해내고 많은 보람을 느낍니다.
                   <br/>그래서 문제 해결 여부를 빠르게 확인할 수 있는 코딩을 시작했습니다.
                 </p>
-                 <br/>
+                <br />
                 <p className="text-white/80 leading-relaxed">
                   서로에게 배우고 협력하여 더 나은 결과를 만들어갈 수 있으면 좋겠습니다.
                   <br/> 언제나 더 좋은 동료가 되기위해 노력하겠습니다.
