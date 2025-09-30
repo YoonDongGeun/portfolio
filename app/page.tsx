@@ -53,7 +53,9 @@ export default function Home() {
       <header className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
         <nav className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold text-white">윤동근 포트폴리오</h1>
+            <h1 className="text-xl font-bold text-white cursor-pointer select-none" onClick={(e) =>
+              window.scrollTo({'top':0})
+            }>윤동근 포트폴리오</h1>
             <div className="hidden md:flex space-x-8">
               <a href="#about" className="text-white/80 hover:text-white transition-colors">About</a>
               <a href="#skills" className="text-white/80 hover:text-white transition-colors">Skills</a>
