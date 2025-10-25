@@ -609,7 +609,7 @@ TypeScript, TanStack Query, MobX, Emotion을 활용하여 모던한 웹 애플�
       'TypeScript', 'TanStack Query', 'MobX', 'Emotion', 'cypress', 'mui', 'react-hook-form', 'react-dnd', 'react-quill', 'xlsx'
     ],
     achievements: [
-      'Render Props 방식의 Select, Headless 방식의 Popover 컴포넌트 구현',
+      'Render Props 방식의 Autocomplete, Headless 방식의 Select 컴포넌트 구현',
       'React-dnd를 활용한 민원 유형 순서 조정 기능 구현',
       '유형별 Form에 따라 민원을 생성하는 화면 구현',
       '민원 통계 화면 구현',
@@ -622,7 +622,7 @@ TypeScript, TanStack Query, MobX, Emotion을 활용하여 모던한 웹 애플�
     features: [
       {
         title: '디자인 시스템 - 공통 컴포넌트',
-        description: 'Render Props 방식의 Select, Headless 방식의 Popover 등 다양한 상황에 맞는 공통 컴포넌트를 제작하여 재사용성과 유지보수성을 높였습니다.',
+        description: 'Render Props 방식의 Autocomplete, Headless 방식의 Select 등 다양한 상황에 맞는 공통 컴포넌트를 제작하여 재사용성과 유지보수성을 높였습니다.',
         images: ['/projects/company/krc/thumbnail.jpeg']
       },
       {
