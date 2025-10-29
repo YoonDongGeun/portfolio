@@ -79,8 +79,8 @@ export default function Home() {
               입니다
             </h1>
             <p className="text-xl md:text-2xl text-white/80 mb-8 leading-relaxed">
-              코드와 설계에 대해 함께 이야기하고 공부하며<br/>
-              개발자들과 사용자 모두에게 좋은 경험을 주고싶은 개발자입니다.
+              정답만 쫓고 스스로 생각하지 못하는 개발자는<br/>
+              시키는 일만 하는 개발자에 불과하다고 생각합니다.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -111,8 +111,8 @@ export default function Home() {
                   현재는 개인 블로그를 제작 및 운영하며 경험을 쌓고 있습니다.
                 </p>
                 <p className="text-white/80 leading-relaxed">
-                  저는 문제를 해결해내고 많은 보람을 느낍니다.
-                  <br/>그래서 문제 해결 여부를 빠르게 확인할 수 있는 코딩을 시작했습니다.
+                  저는 더 좋은 개발자가 되기 위해 끊임없이 배우고 성장하는 것을 중요하게 생각합니다.
+                  <br/>이 생각대로 노력하며 발전해 나가고 있습니다.
                 </p>
                 <br />
                 <p className="text-white/80 leading-relaxed">

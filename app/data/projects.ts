@@ -507,17 +507,17 @@ const nextConfig = {
       'React', 'TypeScript', 'TanStack Query', 'MobX', 'Emotion', 'mui', 'react-hook-form'
     ],
     achievements: [
-      '상품의 "단일/복합/결합" 여부와 가격정책 "일반/구독/렌탈/좌석" 종류와 옵션 입력값에 따른 등록 Form 구현',
+      '상품의 "단일/복합/결합" 여부와 가격정책 및 옵션 입력값에 따른 등록 Form 구현',
       'Form의 입력과 사용자 상호작용에 따른 동적인 Input 생성과 상태관리 구현',
       'MobX를 활용한 개별 상품 Row를 객체화 하여 관리가 용이하도록 구현',
       '대용량 데이터 성능을 위한 Table 가상화, EventListener의 위임 구현',
       '복사 붙여넣기, 드래그, 우클릭 메뉴 등이 사용 가능한 대용량 상품 등록 및 관리 기능 구현',
-      '블록 코딩같이 생긴 Rule Engine 적용 화면 설계 및 구현'
+      '블록 코딩같이 생긴 Rule Engine 적용 화면 설계'
     ],
     challenges: [
       '엑셀 형태의 대용량 상품 수정 화면에서 성능 이슈를 Table 가상화와 이벤트 위임으로 해결',
       '다양한 Form 입력과 상호작용에 따른 동적 Input 생성의 복잡한 상태 관리를 MobX로 효율화',
-      'Rule Engine 작동 방식에 맞게 고객이 쇼핑몰 설정할 수 있는 화면 기획 및 설계의 어려움을 단계적 접근으로 해결'
+      'Rule Engine 작동 방식에 맞게 고객이 쇼핑몰 설정할 수 있는 화면 기획 및 설계'
     ],
     features: [
       {
@@ -572,12 +572,12 @@ class SelectCell(카테고리 셀렉트용), class ChevronCell(복합/결합 상
       {
         title: '상품 종류와 가격 정책에 따른 동적 Form',
         description: `React Hook Form과 MobX를 활용하여 사용자 상호작용에 따라 동적으로 Input이 생성되는 복잡한 상품 등록 폼을 구현했습니다. 예를 들어, 단일/복합/결합 상태와, 일반/구독/좌석/렌탈 가격 정책에 따라 Form이 동적으로 변합니다.
-또한 입력한 옵션에 따라서 여러 상품을 옵션별로 생성하며 Form이 변하기도 합니다.`,
+또한 입력한 옵션에 따라서 SKU단위의 여러 상품을 옵션별로 생성하며 Form이 변하기도 합니다.`,
         images: ['/projects/company/focus/thumbnail.jpeg']
       },
       {
         title: 'Rule Engine',
-        description: `블록 코딩 형태의 직관적인 화면으로 비즈니스 로직을 설정할 수 있는 기능.
+        description: `블록 코딩 형태의 직관적인 화면으로 비즈니스 로직을 설정할 수 있는 기능 설계.
 예를 들면 야구에서 한화가 1등를 하면 [item.category == "야구 용품" && user.membership == "실버"]일때 [item.discount = 0.1]을 수행할 수 있도록 블록 코딩형태로 만들어 주는 기능이다.`,
         images: ['/projects/company/focus/scratch.png']
       }
