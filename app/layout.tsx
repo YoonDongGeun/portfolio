@@ -1,28 +1,22 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const SITE_URL = "https://yooncarrot-portfolio.vercel.app";
 
 export const metadata: Metadata = {
-  title: "윤동근 | 포트폴리오",
-  description: "개발자 윤동근의 포트폴리오입니다.",
+  metadataBase: new URL(SITE_URL),
+  title: "윤동근 | 프론트엔드 개발자 포트폴리오",
+  description:
+    "구조로 푸는 상태 관리, 측정으로 증명하는 개발. 프론트엔드 개발자 윤동근의 포트폴리오입니다.",
   openGraph: {
-    title: "윤동근 | 포트폴리오",
-    description: "개발자 윤동근의 포트폴리오입니다.",
-    url: "https://yooncarrot-portfolio.vercel.app", // 실제 배포 도메인
+    title: "윤동근 | 프론트엔드 개발자 포트폴리오",
+    description:
+      "구조로 푸는 상태 관리, 측정으로 증명하는 개발. 프론트엔드 개발자 윤동근의 포트폴리오입니다.",
+    url: SITE_URL,
     siteName: "윤동근 포트폴리오",
     images: [
       {
-        url: "/thumbnail.png", // OG 이미지 경로
+        url: "/thumbnail.png",
         width: 1200,
         height: 630,
         alt: "윤동근 포트폴리오 대표 이미지",
@@ -33,18 +27,25 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#eef1f6",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="ko">
+      <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }
